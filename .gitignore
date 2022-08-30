@@ -8,3 +8,6 @@ grayscale_with_OpenCV.py
 make_grayscale.py
 rgb_without_opencv.py
 rgb_with_opencv.py
+grayscale_without_OpenCV.py
+taj.png
+azhar_pic.png
