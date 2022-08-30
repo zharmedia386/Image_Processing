@@ -1,0 +1,62 @@
+<html>
+<head>
+<title>Python Flask Upload and display image</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+</head>
+<body>
+<p><h1 align="center">RGB IMAGE OPENCV FLASK PYTHON</h1></p>
+<div class="container">
+<div class="row">
+    <h2>Select a file to upload</h2>
+    <p>
+        {% with messages = get_flashed_messages() %}
+          {% if messages %}
+            <ul>
+            {% for message in messages %}
+              <li>{{ message }}</li>
+            {% endfor %}
+            </ul>
+          {% endif %}
+        {% endwith %}
+    </p>
+    {% if filename %}
+        <div class="row">
+          <div class="col">
+            <div>
+              <img class="width:300;" height = "300" }" src="{{ url_for('display_image', filename=filename) }}">
+            </div>
+            <div>
+              <img class="width:300;" height = "300" }" src="{{ url_for('display_with_open_cv', filename=filename) }}">
+              <p>Grayscale with OpenCV</p>
+            </div>
+          </div>
+          <div class="col">
+            <div>
+              <img class="width:300;" height = "300" }" src="{{ url_for('display_image', filename=filename) }}">
+            </div>
+            <div>
+              <img class="width:300;" height = "300" }" src="{{ url_for('display_without_open_cv', filename=filename) }}">
+              <p>Grayscale without OpenCV</p>
+            </div>
+          </div>
+        </div>
+    {% endif %}
+    <p>R = {{ red }}</p>
+    <p>G = {{ green }}</p>
+    <p>B = {{ blue }}</p>
+    <p>grayscale = {{ grayscale }}</p>
+    <form method="post" action="/" enctype="multipart/form-data">
+        <dl>
+            <p>
+                <input type="file" name="file" class="form-control" autocomplete="off" required>
+            </p>
+        </dl>
+        <p>
+            <input type="submit" value="Submit" class="btn btn-primary">
+        </p>
+    </form>
+</div>
+</div>
+</body>
+</html>

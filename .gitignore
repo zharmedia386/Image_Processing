@@ -1,0 +1,10 @@
+pertemuan_1/
+
+*.docx
+*.pdf
+
+grayscale_without_OpenCV2.py
+grayscale_with_OpenCV.py
+make_grayscale.py
+rgb_without_opencv.py
+rgb_with_opencv.py
