@@ -435,5 +435,69 @@ def display_brightness_divide_without_open_cv(filename):
     #print('display_without_open_cv filename: ' + filename)
     return redirect(url_for('static', filename='saved/without_opencv/brightness_divide/' + filename), code=301)
 
+
+#########################################################################################
+# BITWISE AND
+#########################################################################################
+
+@app.route('/bitwise_and')
+def bitwise_and():
+    return render_template('bitwise_and.html')
+ 
+@app.route('/bitwise_and', methods=['POST'])
+def upload_image_bitwise_and():
+    if 'file' not in request.files:
+        flash('No file part')
+        return redirect(request.url)
+    file = request.files['file']
+    if file.filename == '':
+        flash('No image selected for uploading')
+        return redirect(request.url)
+    if file and allowed_file(file.filename):
+        filename = secure_filename(file.filename)
+        file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+        #print('upload_image filename: ' + filename)
+        flash('Image successfully uploaded and displayed below')
+		
+        image_path = "static/uploads/" + filename
+        original_image = cv2.imread(image_path)
+
+        # WITH OPEN CV
+        RGB_image = cv2.resize(original_image, (250, 250)) 
+        blue = RGB_image[:,:,0]
+        green = RGB_image[:,:,1]
+        red = RGB_image[:,:,2]
+
+        grayscale = blue/3 + green/3 + red/3
+
+        RGB_image[:,:,0] = grayscale
+        RGB_image[:,:,1] = grayscale
+        RGB_image[:,:,2] = grayscale
+        cv2.imwrite("static/saved/with_opencv/grayscale/" + filename, RGB_image)
+
+		# WITH OPEN CV
+        bitwise_and_image = cv2.bitwise_and(original_image, RGB_image)
+        cv2.imwrite("static/saved/with_opencv/bitwise_and/" + filename, bitwise_and_image)
+
+        return render_template('bitwise_and.html', filename=filename)
+    else:
+        flash('Allowed image types are - png, jpg, jpeg, gif')
+        return redirect(request.url)
+ 
+@app.route('/display_bitwise_and/<filename>')
+def display_bitwise_and(filename):
+    #print('display_image filename: ' + filename)
+    return redirect(url_for('static', filename='uploads/' + filename), code=301)
+
+@app.route('/display_bitwise_and_with_open_cv/bitwise_and/<filename>')
+def display_bitwise_and_with_open_cv(filename):
+    #print('display_with_open_cv filename: ' + filename)
+    return redirect(url_for('static', filename='saved/with_opencv/bitwise_and/' + filename), code=301)
+
+@app.route('/display_bitwise_and_without_open_cv/bitwise_and/<filename>')
+def display_bitwise_and_without_open_cv(filename):
+    #print('display_without_open_cv filename: ' + filename)
+    return redirect(url_for('static', filename='saved/without_opencv/bitwise_and/' + filename), code=301)
+
 if __name__ == "__main__":
     app.run(debug=True)
