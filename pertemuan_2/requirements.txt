@@ -1,0 +1,7 @@
+flask
+gunicorn
+dnspython
+werkzeug.utils
+os
+cv2
+numpy
