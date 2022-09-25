@@ -15,7 +15,7 @@
       {% endif %}
     {% endwith %}
     <!-- chart row starts here -->
-    {% if filename %}
+    {% if filename1 and filename2 %}
     <div class="row">
       <div class="col-sm-4 stretch-card grid-margin">
         <div class="card">
@@ -24,7 +24,7 @@
               Display Original Image 1
             </div>
             <div class="col">
-              <img class="width:250;" height = "250" }" src="{{ url_for('display_bitwise_and', filename=filename) }}">
+              <img class="width:250;" height = "250" }" src="{{ url_for('display_bitwise_and1', filename=filename1) }}">
             </div>
           </div>
         </div>
@@ -33,15 +33,14 @@
         <div class="card">
           <div class="card-body">
             <div class="card-title"> 
-                Display Original Image 2 (Grayscale)
+                Display Original Image 2 
             </div>
             <div class="col">
-              <img class="width:250;" height = "250" }" src="{{ url_for('display_grayscale_with_open_cv', filename=filename) }}">
+              <img class="width:250;" height = "250" }" src="{{ url_for('display_bitwise_and2', filename=filename2) }}">
             </div>
           </div>
         </div>
       </div>
-    </div>
       <div class="col-sm-4 stretch-card grid-margin">
         <div class="card">
           <div class="card-body">
@@ -49,7 +48,7 @@
                 Bitwise And Image 1 and 2
             </div>
             <div class="col">
-              <img class="width:250;" height = "250" }" src="{{ url_for('display_bitwise_and_with_open_cv', filename=filename) }}">
+              <img class="width:250;" height = "250" }" src="{{ url_for('display_bitwise_and_with_open_cv', filename=filename1) }}">
             </div>
           </div>
         </div>
@@ -62,7 +61,11 @@
       </div>
     {% endif %}
     <form method="post" action="/bitwise_and" enctype="multipart/form-data">
-      <input type="file" name="file" class="form-control" autocomplete="off" required>
+      <h4>Image 1</h4>
+      <input type="file" name="file1" class="form-control" autocomplete="off" required>
+      <br>
+      <h4>Image 2</h4>
+      <input type="file" name="file2" class="form-control" autocomplete="off" required>
       <br>
       <input type="submit" value="Submit" class="btn btn-primary">
     </form>

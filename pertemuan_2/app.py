@@ -1,3 +1,4 @@
+from lzma import FILTER_LZMA2
 from flask import Flask, flash, request, redirect, url_for, render_template
 import urllib.request
 import os
@@ -446,6 +447,174 @@ def bitwise_and():
  
 @app.route('/bitwise_and', methods=['POST'])
 def upload_image_bitwise_and():
+    if 'file1' not in request.files and 'file2' not in request.files:
+        flash('No file part')
+        return redirect(request.url)
+    file1 = request.files['file1']
+    file2 = request.files['file2']
+    if file1.filename == '' and file2.filename == '':
+        flash('No image selected for uploading')
+        return redirect(request.url)
+    if (file1 and allowed_file(file1.filename)) and (file2 and allowed_file(file2.filename)):
+        filename1 = secure_filename(file1.filename)
+        filename2 = secure_filename(file2.filename)
+        file1.save(os.path.join(app.config['UPLOAD_FOLDER'], filename1))
+        file2.save(os.path.join(app.config['UPLOAD_FOLDER'], filename2))
+        #print('upload_image filename: ' + filename)
+        flash('Image successfully uploaded and displayed below')
+		
+        image_path1 = "static/uploads/" + filename1
+        image_path2 = "static/uploads/" + filename2
+        original_image1 = cv2.imread(image_path1)
+        original_image2 = cv2.imread(image_path2)
+
+		# WITH OPEN CV
+        bitwise_and_image = cv2.bitwise_and(original_image1, original_image2)
+        cv2.imwrite("static/saved/with_opencv/bitwise_and/" + filename1, bitwise_and_image)
+
+        return render_template('bitwise_and.html', filename1=filename1, filename2=filename2)
+    else:
+        flash('Allowed image types are - png, jpg, jpeg, gif')
+        return redirect(request.url)
+ 
+@app.route('/display_bitwise_and1/<filename>')
+def display_bitwise_and1(filename):
+    #print('display_image filename: ' + filename)
+    return redirect(url_for('static', filename='uploads/' + filename), code=301)
+
+@app.route('/display_bitwise_and2/<filename>')
+def display_bitwise_and2(filename):
+    #print('display_image filename: ' + filename)
+    return redirect(url_for('static', filename='uploads/' + filename), code=301)
+
+@app.route('/display_bitwise_and_with_open_cv/bitwise_and/<filename>')
+def display_bitwise_and_with_open_cv(filename):
+    #print('display_with_open_cv filename: ' + filename)
+    return redirect(url_for('static', filename='saved/with_opencv/bitwise_and/' + filename), code=301)
+
+
+#########################################################################################
+# BITWISE OR
+#########################################################################################
+
+@app.route('/bitwise_or')
+def bitwise_or():
+    return render_template('bitwise_or.html')
+ 
+@app.route('/bitwise_or', methods=['POST'])
+def upload_image_bitwise_or():
+    if 'file1' not in request.files and 'file2' not in request.files:
+        flash('No file part')
+        return redirect(request.url)
+    file1 = request.files['file1']
+    file2 = request.files['file2']
+    if file1.filename == '' and file2.filename == '':
+        flash('No image selected for uploading')
+        return redirect(request.url)
+    if (file1 and allowed_file(file1.filename)) and (file2 and allowed_file(file2.filename)):
+        filename1 = secure_filename(file1.filename)
+        filename2 = secure_filename(file2.filename)
+        file1.save(os.path.join(app.config['UPLOAD_FOLDER'], filename1))
+        file2.save(os.path.join(app.config['UPLOAD_FOLDER'], filename2))
+        #print('upload_image filename: ' + filename)
+        flash('Image successfully uploaded and displayed below')
+		
+        image_path1 = "static/uploads/" + filename1
+        image_path2 = "static/uploads/" + filename2
+        original_image1 = cv2.imread(image_path1)
+        original_image2 = cv2.imread(image_path2)
+
+		# WITH OPEN CV
+        bitwise_or_image = cv2.bitwise_or(original_image1, original_image2)
+        cv2.imwrite("static/saved/with_opencv/bitwise_or/" + filename1, bitwise_or_image)
+
+        return render_template('bitwise_or.html', filename1=filename1, filename2=filename2)
+    else:
+        flash('Allowed image types are - png, jpg, jpeg, gif')
+        return redirect(request.url)
+ 
+@app.route('/display_bitwise_or1/<filename>')
+def display_bitwise_or1(filename):
+    #print('display_image filename: ' + filename)
+    return redirect(url_for('static', filename='uploads/' + filename), code=301)
+
+@app.route('/display_bitwise_or2/<filename>')
+def display_bitwise_or2(filename):
+    #print('display_image filename: ' + filename)
+    return redirect(url_for('static', filename='uploads/' + filename), code=301)
+
+@app.route('/display_bitwise_or_with_open_cv/bitwise_or/<filename>')
+def display_bitwise_or_with_open_cv(filename):
+    #print('display_with_open_cv filename: ' + filename)
+    return redirect(url_for('static', filename='saved/with_opencv/bitwise_or/' + filename), code=301)
+
+
+#########################################################################################
+# BITWISE XOR
+#########################################################################################
+
+@app.route('/bitwise_xor')
+def bitwise_xor():
+    return render_template('bitwise_xor.html')
+ 
+@app.route('/bitwise_xor', methods=['POST'])
+def upload_image_bitwise_xor():
+    if 'file1' not in request.files and 'file2' not in request.files:
+        flash('No file part')
+        return redirect(request.url)
+    file1 = request.files['file1']
+    file2 = request.files['file2']
+    if file1.filename == '' and file2.filename == '':
+        flash('No image selected for uploading')
+        return redirect(request.url)
+    if (file1 and allowed_file(file1.filename)) and (file2 and allowed_file(file2.filename)):
+        filename1 = secure_filename(file1.filename)
+        filename2 = secure_filename(file2.filename)
+        file1.save(os.path.join(app.config['UPLOAD_FOLDER'], filename1))
+        file2.save(os.path.join(app.config['UPLOAD_FOLDER'], filename2))
+        #print('upload_image filename: ' + filename)
+        flash('Image successfully uploaded and displayed below')
+		
+        image_path1 = "static/uploads/" + filename1
+        image_path2 = "static/uploads/" + filename2
+        original_image1 = cv2.imread(image_path1)
+        original_image2 = cv2.imread(image_path2)
+
+		# WITH OPEN CV
+        bitwise_xor_image = cv2.bitwise_xor(original_image1, original_image2)
+        cv2.imwrite("static/saved/with_opencv/bitwise_xor/" + filename1, bitwise_xor_image)
+
+        return render_template('bitwise_xor.html', filename1=filename1, filename2=filename2)
+    else:
+        flash('Allowed image types are - png, jpg, jpeg, gif')
+        return redirect(request.url)
+ 
+@app.route('/display_bitwise_xor1/<filename>')
+def display_bitwise_xor1(filename):
+    #print('display_image filename: ' + filename)
+    return redirect(url_for('static', filename='uploads/' + filename), code=301)
+
+@app.route('/display_bitwise_xor2/<filename>')
+def display_bitwise_xor2(filename):
+    #print('display_image filename: ' + filename)
+    return redirect(url_for('static', filename='uploads/' + filename), code=301)
+
+@app.route('/display_bitwise_xor_with_open_cv/bitwise_xor/<filename>')
+def display_bitwise_xor_with_open_cv(filename):
+    #print('display_with_open_cv filename: ' + filename)
+    return redirect(url_for('static', filename='saved/with_opencv/bitwise_xor/' + filename), code=301)
+
+
+#########################################################################################
+# BITWISE NOT
+#########################################################################################
+
+@app.route('/bitwise_not')
+def bitwise_not():
+    return render_template('bitwise_not.html')
+ 
+@app.route('/bitwise_not', methods=['POST'])
+def upload_image_bitwise_not():
     if 'file' not in request.files:
         flash('No file part')
         return redirect(request.url)
@@ -462,42 +631,24 @@ def upload_image_bitwise_and():
         image_path = "static/uploads/" + filename
         original_image = cv2.imread(image_path)
 
-        # WITH OPEN CV
-        RGB_image = cv2.resize(original_image, (250, 250)) 
-        blue = RGB_image[:,:,0]
-        green = RGB_image[:,:,1]
-        red = RGB_image[:,:,2]
-
-        grayscale = blue/3 + green/3 + red/3
-
-        RGB_image[:,:,0] = grayscale
-        RGB_image[:,:,1] = grayscale
-        RGB_image[:,:,2] = grayscale
-        cv2.imwrite("static/saved/with_opencv/grayscale/" + filename, RGB_image)
-
 		# WITH OPEN CV
-        bitwise_and_image = cv2.bitwise_and(original_image, RGB_image)
-        cv2.imwrite("static/saved/with_opencv/bitwise_and/" + filename, bitwise_and_image)
+        bitwise_not_image = cv2.bitwise_not(original_image)
+        cv2.imwrite("static/saved/with_opencv/bitwise_not/" + filename, bitwise_not_image)
 
-        return render_template('bitwise_and.html', filename=filename)
+        return render_template('bitwise_not.html', filename=filename)
     else:
         flash('Allowed image types are - png, jpg, jpeg, gif')
         return redirect(request.url)
  
-@app.route('/display_bitwise_and/<filename>')
-def display_bitwise_and(filename):
+@app.route('/display_bitwise_not/<filename>')
+def display_bitwise_not(filename):
     #print('display_image filename: ' + filename)
     return redirect(url_for('static', filename='uploads/' + filename), code=301)
 
-@app.route('/display_bitwise_and_with_open_cv/bitwise_and/<filename>')
-def display_bitwise_and_with_open_cv(filename):
+@app.route('/display_bitwise_not_with_open_cv/bitwise_not/<filename>')
+def display_bitwise_not_with_open_cv(filename):
     #print('display_with_open_cv filename: ' + filename)
-    return redirect(url_for('static', filename='saved/with_opencv/bitwise_and/' + filename), code=301)
-
-@app.route('/display_bitwise_and_without_open_cv/bitwise_and/<filename>')
-def display_bitwise_and_without_open_cv(filename):
-    #print('display_without_open_cv filename: ' + filename)
-    return redirect(url_for('static', filename='saved/without_opencv/bitwise_and/' + filename), code=301)
+    return redirect(url_for('static', filename='saved/with_opencv/bitwise_not/' + filename), code=301)
 
 if __name__ == "__main__":
     app.run(debug=True)
