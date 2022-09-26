@@ -651,4 +651,4 @@ def display_bitwise_not_with_open_cv(filename):
     return redirect(url_for('static', filename='saved/with_opencv/bitwise_not/' + filename), code=301)
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run()

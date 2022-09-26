@@ -1,5 +1,8 @@
 flask
+werkzeug
+jinja2
 gunicorn
 dnspython
+flask-reuploaded
 opencv-python
 numpy
