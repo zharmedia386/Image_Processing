@@ -1,0 +1,73 @@
+{% extends "layouts/master.html" %}
+{% block content %}
+
+<div class="main-panel">
+  <div class="content-wrapper pb-0">
+    <h3>Random Operations</h3><br>
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+          {% for message in messages %}
+            {{ message }}
+          {% endfor %}
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+      {% endif %}
+    {% endwith %}
+    <!-- chart row starts here -->
+    {% if filename %}
+    <div class="row">
+      <div class="col-sm-4 stretch-card grid-margin">
+        <div class="card">
+          <div class="card-body">
+            <div class="card-title"> 
+              Display Original Image
+            </div>
+            <div class="col">
+              <img class="width:250;" height = "250" }" src="{{ url_for('display_random', filename=filename) }}">
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-4 stretch-card grid-margin">
+        <div class="card">
+          <div class="card-body">
+            <div class="card-title"> 
+              Image Results
+            </div>
+            <div class="col">
+              <img class="width:250;" height = "250" }" src="{{ url_for('display_random_with_open_cv', filename=filename) }}">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% else %}
+      <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        Please Upload a File First!
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+    {% endif %}
+    <form method="post" action="/random" enctype="multipart/form-data">
+      <input type="file" name="file" class="form-control" autocomplete="off" required>
+      <br>
+      <p class="page-description">Nilai Penambah Kecerahan:</p>
+      <input type="text" id="range_02" name="brightness_add" value="" />
+      <br>
+      <p class="page-description">Nilai Pengurang Kecerahan:</p>
+      <input type="text" id="range_022" name="brightness_subtraction" value="" />
+      <br>
+      <p class="page-description">Nilai Pengali Kecerahan:</p>
+      <input type="text" id="range_023" name="brightness_multiplication" value="" />
+      <br>
+      <p class="page-description">Nilai Pembagi Kecerahan:</p>
+      <input type="text" id="range_024" name="brightness_divide" value="" />
+      <br>
+      <input type="submit" value="Submit" class="btn btn-primary">
+    </form>
+    <br><br><br><br><br><br>
+  </div>
+  <!-- partial -->
+</div>
+
+{% endblock %}

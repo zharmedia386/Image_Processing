@@ -1,0 +1,69 @@
+{% extends "layouts/master.html" %}
+{% block content %}
+
+<div class="main-panel">
+  <div class="content-wrapper pb-0">
+    <h3>Global Thresholding</h3><br>
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+          {% for message in messages %}
+            {{ message }}
+          {% endfor %}
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+      {% endif %}
+    {% endwith %}
+    <!-- chart row starts here -->
+    {% if filename %}
+    <div class="row">
+      <div class="col-sm-4 stretch-card grid-margin">
+        <div class="card">
+          <div class="card-body">
+            <div class="card-title"> 
+              Display Original Image
+            </div>
+            <div class="col">
+              <img class="width:250;" height = "250" }" src="{{ url_for('display_global_thresholding', filename=filename) }}">
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-4 stretch-card grid-margin">
+        <div class="card">
+          <div class="card-body">
+            <div class="card-title"> 
+              Global Thresholding with OpenCV 
+            </div>
+            <div class="col">
+              <img class="width:250;" height = "250" }" src="{{ url_for('display_global_thresholding_with_open_cv', filename=filename) }}">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% else %}
+      <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        Please Upload a File First!
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+    {% endif %}
+    <form method="post" action="/global_thresholding" enctype="multipart/form-data">
+      <input type="file" name="file" class="form-control" autocomplete="off" required>
+      <br>
+      <input type="submit" value="Submit" class="btn btn-primary">
+    </form>
+    <br><br><br><br><br><br>
+  </div>
+  <!-- content-wrapper ends -->
+  <!-- partial:partials/_footer.html -->
+  <footer class="footer">
+    <div class="d-sm-flex justify-content-center justify-content-sm-between">
+      <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Copyright © 2021 <a href="https://www.bootstrapdash.com/" target="_blank">BootstrapDash</a>. All rights reserved.</span>
+      <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center">Hand-crafted & made with <i class="mdi mdi-heart text-danger"></i></span>
+    </div>
+  </footer>
+  <!-- partial -->
+</div>
+
+{% endblock %}

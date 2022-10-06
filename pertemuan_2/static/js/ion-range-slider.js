@@ -7,9 +7,41 @@
 
   if ($("#range_02").length) {
     $("#range_02").ionRangeSlider({
-      min: 100,
-      max: 1000,
-      from: 550
+      min: 1,
+      max: 100,
+      from: 10
+    });
+  }
+
+  if ($("#range_022").length) {
+    $("#range_022").ionRangeSlider({
+      min: 1,
+      max: 100,
+      from: 10
+    });
+  }
+
+  if ($("#range_023").length) {
+    $("#range_023").ionRangeSlider({
+      min: 1,
+      max: 10,
+      from: 2
+    });
+  }
+
+  if ($("#range_024").length) {
+    $("#range_024").ionRangeSlider({
+      min: 1,
+      max: 10,
+      from: 2
+    });
+  }
+
+  if ($("#range_021").length) {
+    $("#range_021").ionRangeSlider({
+      min: 1,
+      max: 10,
+      from: 2
     });
   }
 
