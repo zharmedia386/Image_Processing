@@ -1073,6 +1073,221 @@ def display_gamma_correction_with_open_cv(filename):
     return redirect(url_for('static', filename='saved/with_opencv/gamma_correction/' + filename), code=301)
 
 
+##########################################################################################
+# LOW PASS FILTER
+#########################################################################################
+
+@app.route('/low_pass_filter')
+def low_pass_filter():
+    return render_template('low_pass_filter.html')
+ 
+@app.route('/low_pass_filter', methods=['POST'])
+def upload_image_low_pass_filter():
+    if 'file' not in request.files:
+        flash('No file part')
+        return redirect(request.url)
+    file = request.files['file']
+    if file.filename == '':
+        flash('No image selected for uploading')
+        return redirect(request.url)
+    if file and allowed_file(file.filename):
+        filename = secure_filename(file.filename)
+        file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+        #print('upload_image filename: ' + filename)
+        flash('Image successfully uploaded and displayed below')
+		
+        image_path = "static/uploads/" + filename
+        original_image = cv2.imread(image_path)
+
+        # create the low pass filter
+        lowFilter = np.ones((3,3),np.float32) / 9
+
+		# WITH OPEN CV
+        # apply the low pass filter to the image
+        lowFilterImage = cv2.filter2D(original_image,-1,lowFilter)
+
+        cv2.imwrite("static/saved/with_opencv/low_pass_filter/" + filename, lowFilterImage)
+
+        return render_template('low_pass_filter.html', filename=filename)
+    else:
+        flash('Allowed image types are - png, jpg, jpeg, gif')
+        return redirect(request.url)
+ 
+@app.route('/display_low_pass_filter/<filename>')
+def display_low_pass_filter(filename):
+    #print('display_image filename: ' + filename)
+    return redirect(url_for('static', filename='uploads/' + filename), code=301)
+
+@app.route('/display_low_pass_filter_with_open_cv/low_pass_filter/<filename>')
+def display_low_pass_filter_with_open_cv(filename):
+    #print('display_with_open_cv filename: ' + filename)
+    return redirect(url_for('static', filename='saved/with_opencv/low_pass_filter/' + filename), code=301)
+
+
+##########################################################################################
+# HIGH PASS FILTER
+#########################################################################################
+
+@app.route('/high_pass_filter')
+def high_pass_filter():
+    return render_template('high_pass_filter.html')
+ 
+@app.route('/high_pass_filter', methods=['POST'])
+def upload_image_high_pass_filter():
+    if 'file' not in request.files:
+        flash('No file part')
+        return redirect(request.url)
+    file = request.files['file']
+    if file.filename == '':
+        flash('No image selected for uploading')
+        return redirect(request.url)
+    if file and allowed_file(file.filename):
+        filename = secure_filename(file.filename)
+        file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+        #print('upload_image filename: ' + filename)
+        flash('Image successfully uploaded and displayed below')
+		
+        image_path = "static/uploads/" + filename
+        original_image = cv2.imread(image_path)
+
+        # create the high pass filter
+        highFilter = np.array([[-1,-1,-1],[-1,8,-1],[-1,-1,-1]])
+
+		# WITH OPEN CV
+        # apply the high pass filter to the image
+        highFilterImage = cv2.filter2D(original_image,-1,highFilter)
+
+        cv2.imwrite("static/saved/with_opencv/high_pass_filter/" + filename, highFilterImage)
+
+        return render_template('high_pass_filter.html', filename=filename)
+    else:
+        flash('Allowed image types are - png, jpg, jpeg, gif')
+        return redirect(request.url)
+ 
+@app.route('/display_high_pass_filter/<filename>')
+def display_high_pass_filter(filename):
+    #print('display_image filename: ' + filename)
+    return redirect(url_for('static', filename='uploads/' + filename), code=301)
+
+@app.route('/display_high_pass_filter_with_open_cv/high_pass_filter/<filename>')
+def display_high_pass_filter_with_open_cv(filename):
+    #print('display_with_open_cv filename: ' + filename)
+    return redirect(url_for('static', filename='saved/with_opencv/high_pass_filter/' + filename), code=301)
+
+
+
+##########################################################################################
+# BAND PASS FILTER
+#########################################################################################
+
+@app.route('/band_pass_filter')
+def band_pass_filter():
+    return render_template('band_pass_filter.html')
+ 
+@app.route('/band_pass_filter', methods=['POST'])
+def upload_image_band_pass_filter():
+    if 'file' not in request.files:
+        flash('No file part')
+        return redirect(request.url)
+    file = request.files['file']
+    if file.filename == '':
+        flash('No image selected for uploading')
+        return redirect(request.url)
+    if file and allowed_file(file.filename):
+        filename = secure_filename(file.filename)
+        file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+        #print('upload_image filename: ' + filename)
+        flash('Image successfully uploaded and displayed below')
+		
+        image_path = "static/uploads/" + filename
+        original_image = cv2.imread(image_path)
+
+        # create the band pass filter
+        bandFilter = np.array([[0,-1,0],[-1,4,-1],[0,-1,0]])
+
+		# WITH OPEN CV
+        # apply the band pass filter to the image
+        bandFilterImage = cv2.filter2D(original_image,-1,bandFilter)
+
+
+        cv2.imwrite("static/saved/with_opencv/band_pass_filter/" + filename, bandFilterImage)
+
+        return render_template('band_pass_filter.html', filename=filename)
+    else:
+        flash('Allowed image types are - png, jpg, jpeg, gif')
+        return redirect(request.url)
+ 
+@app.route('/display_band_pass_filter/<filename>')
+def display_band_pass_filter(filename):
+    #print('display_image filename: ' + filename)
+    return redirect(url_for('static', filename='uploads/' + filename), code=301)
+
+@app.route('/display_band_pass_filter_with_open_cv/band_pass_filter/<filename>')
+def display_band_pass_filter_with_open_cv(filename):
+    #print('display_with_open_cv filename: ' + filename)
+    return redirect(url_for('static', filename='saved/with_opencv/band_pass_filter/' + filename), code=301)
+
+
+
+##########################################################################################
+# SALT AND PEPPER NOISE
+#########################################################################################
+
+@app.route('/salt_and_pepper_noise')
+def salt_and_pepper_noise():
+    return render_template('salt_and_pepper_noise.html')
+ 
+@app.route('/salt_and_pepper_noise', methods=['POST'])
+def upload_image_salt_and_pepper_noise():
+    if 'file' not in request.files:
+        flash('No file part')
+        return redirect(request.url)
+    file = request.files['file']
+    if file.filename == '':
+        flash('No image selected for uploading')
+        return redirect(request.url)
+    if file and allowed_file(file.filename):
+        filename = secure_filename(file.filename)
+        file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+        #print('upload_image filename: ' + filename)
+        flash('Image successfully uploaded and displayed below')
+		
+        image_path = "static/uploads/" + filename
+        original_image = cv2.imread(image_path)
+
+        # convert to grayscale
+        # gray = cv2.cvtColor(original_image, cv2.COLOR_BGR2GRAY)
+
+		# WITH OPEN CV
+        # convert to float32
+        # gray = np.float32(gray)
+        original_image = np.float32(original_image)
+
+        # create the salt noise
+        salt = np.random.randint(0,100,original_image.shape)
+        salt = np.float32(salt)
+
+        # add the salt noise
+        saltImage = cv2.add(original_image,salt)
+
+
+        cv2.imwrite("static/saved/with_opencv/salt_and_pepper_noise/" + filename, saltImage)
+
+        return render_template('salt_and_pepper_noise.html', filename=filename)
+    else:
+        flash('Allowed image types are - png, jpg, jpeg, gif')
+        return redirect(request.url)
+ 
+@app.route('/display_salt_and_pepper_noise/<filename>')
+def display_salt_and_pepper_noise(filename):
+    #print('display_image filename: ' + filename)
+    return redirect(url_for('static', filename='uploads/' + filename), code=301)
+
+@app.route('/display_salt_and_pepper_noise_with_open_cv/salt_and_pepper_noise/<filename>')
+def display_salt_and_pepper_noise_with_open_cv(filename):
+    #print('display_with_open_cv filename: ' + filename)
+    return redirect(url_for('static', filename='saved/with_opencv/salt_and_pepper_noise/' + filename), code=301)
+
 
 @app.route('/display_random/<filename>')
 def display_random(filename):
