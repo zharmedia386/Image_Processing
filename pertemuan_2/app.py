@@ -1289,6 +1289,251 @@ def display_salt_and_pepper_noise_with_open_cv(filename):
     return redirect(url_for('static', filename='saved/with_opencv/salt_and_pepper_noise/' + filename), code=301)
 
 
+##########################################################################################
+# AVERAGE BLURRING
+#########################################################################################
+
+@app.route('/average_blurring')
+def average_blurring():
+    return render_template('average_blurring.html')
+ 
+@app.route('/average_blurring', methods=['POST'])
+def upload_image_average_blurring():
+    if 'file' not in request.files:
+        flash('No file part')
+        return redirect(request.url)
+    file = request.files['file']
+    if file.filename == '':
+        flash('No image selected for uploading')
+        return redirect(request.url)
+    if file and allowed_file(file.filename):
+        filename = secure_filename(file.filename)
+        file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+        #print('upload_image filename: ' + filename)
+        flash('Image successfully uploaded and displayed below')
+		
+        image_path = "static/uploads/" + filename
+        original_image = cv2.imread(image_path)
+
+		# WITH OPEN CV
+        average_blur_image = cv2.blur(src=original_image, ksize=(5,5))
+
+        cv2.imwrite("static/saved/with_opencv/average_blurring/" + filename, average_blur_image)
+
+        return render_template('average_blurring.html', filename=filename)
+    else:
+        flash('Allowed image types are - png, jpg, jpeg, gif')
+        return redirect(request.url)
+ 
+@app.route('/display_average_blurring/<filename>')
+def display_average_blurring(filename):
+    #print('display_image filename: ' + filename)
+    return redirect(url_for('static', filename='uploads/' + filename), code=301)
+
+@app.route('/display_average_blurring_with_open_cv/average_blurring/<filename>')
+def display_average_blurring_with_open_cv(filename):
+    #print('display_with_open_cv filename: ' + filename)
+    return redirect(url_for('static', filename='saved/with_opencv/average_blurring/' + filename), code=301)
+
+
+##########################################################################################
+# GAUSSIAN BLURRING
+#########################################################################################
+
+@app.route('/gaussian_blurring')
+def gaussian_blurring():
+    return render_template('gaussian_blurring.html')
+ 
+@app.route('/gaussian_blurring', methods=['POST'])
+def upload_image_gaussian_blurring():
+    if 'file' not in request.files:
+        flash('No file part')
+        return redirect(request.url)
+    file = request.files['file']
+    if file.filename == '':
+        flash('No image selected for uploading')
+        return redirect(request.url)
+    if file and allowed_file(file.filename):
+        filename = secure_filename(file.filename)
+        file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+        #print('upload_image filename: ' + filename)
+        flash('Image successfully uploaded and displayed below')
+		
+        image_path = "static/uploads/" + filename
+        original_image = cv2.imread(image_path)
+
+		# WITH OPEN CV
+        cv_gaussianblur_5 = cv2.GaussianBlur(src=original_image,ksize=(5,5),sigmaX=0)
+        cv_gaussianblur_25 = cv2.GaussianBlur(src=original_image,ksize=(25,25),sigmaX=0) 
+        filename2 = 'gaussian_blurring2.png'
+
+        cv2.imwrite("static/saved/with_opencv/gaussian_blurring/" + filename, cv_gaussianblur_5)
+        cv2.imwrite("static/saved/with_opencv/gaussian_blurring/" + filename2, cv_gaussianblur_25)
+
+        return render_template('gaussian_blurring.html', filename=filename, filename2=filename2)
+    else:
+        flash('Allowed image types are - png, jpg, jpeg, gif')
+        return redirect(request.url)
+ 
+@app.route('/display_gaussian_blurring/<filename>')
+def display_gaussian_blurring(filename):
+    #print('display_image filename: ' + filename)
+    return redirect(url_for('static', filename='uploads/' + filename), code=301)
+
+@app.route('/display_gaussian_blurring_with_open_cv/gaussian_blurring/<filename>')
+def display_gaussian_blurring_with_open_cv(filename):
+    #print('display_with_open_cv filename: ' + filename)
+    return redirect(url_for('static', filename='saved/with_opencv/gaussian_blurring/' + filename), code=301)
+
+
+##########################################################################################
+# MEDIAN BLURRING
+#########################################################################################
+
+@app.route('/median_blurring')
+def median_blurring():
+    return render_template('median_blurring.html')
+ 
+@app.route('/median_blurring', methods=['POST'])
+def upload_image_median_blurring():
+    if 'file' not in request.files:
+        flash('No file part')
+        return redirect(request.url)
+    file = request.files['file']
+    if file.filename == '':
+        flash('No image selected for uploading')
+        return redirect(request.url)
+    if file and allowed_file(file.filename):
+        filename = secure_filename(file.filename)
+        file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+        #print('upload_image filename: ' + filename)
+        flash('Image successfully uploaded and displayed below')
+		
+        image_path = "static/uploads/" + filename
+        original_image = cv2.imread(image_path)
+
+		# WITH OPEN CV
+        cv_median_25 = cv2.medianBlur(src=original_image, ksize=25)
+        cv_median_5 = cv2.medianBlur(src=original_image, ksize=5)
+        filename2 = 'median_blurring2.png'
+
+        cv2.imwrite("static/saved/with_opencv/median_blurring/" + filename, cv_median_5)
+        cv2.imwrite("static/saved/with_opencv/median_blurring/" + filename2, cv_median_25)
+
+        return render_template('median_blurring.html', filename=filename, filename2=filename2)
+    else:
+        flash('Allowed image types are - png, jpg, jpeg, gif')
+        return redirect(request.url)
+ 
+@app.route('/display_median_blurring/<filename>')
+def display_median_blurring(filename):
+    #print('display_image filename: ' + filename)
+    return redirect(url_for('static', filename='uploads/' + filename), code=301)
+
+@app.route('/display_median_blurring_with_open_cv/median_blurring/<filename>')
+def display_median_blurring_with_open_cv(filename):
+    #print('display_with_open_cv filename: ' + filename)
+    return redirect(url_for('static', filename='saved/with_opencv/median_blurring/' + filename), code=301)
+
+
+##########################################################################################
+# BILATERAL FILTERING
+#########################################################################################
+
+@app.route('/bilateral_filtering')
+def bilateral_filtering():
+    return render_template('bilateral_filtering.html')
+ 
+@app.route('/bilateral_filtering', methods=['POST'])
+def upload_image_bilateral_filtering():
+    if 'file' not in request.files:
+        flash('No file part')
+        return redirect(request.url)
+    file = request.files['file']
+    if file.filename == '':
+        flash('No image selected for uploading')
+        return redirect(request.url)
+    if file and allowed_file(file.filename):
+        filename = secure_filename(file.filename)
+        file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+        #print('upload_image filename: ' + filename)
+        flash('Image successfully uploaded and displayed below')
+		
+        image_path = "static/uploads/" + filename
+        original_image = cv2.imread(image_path)
+
+		# WITH OPEN CV
+        bf = cv2.bilateralFilter(src=original_image,d=9,sigmaColor=75,sigmaSpace=75)
+
+        cv2.imwrite("static/saved/with_opencv/bilateral_filtering/" + filename, bf)
+
+        return render_template('bilateral_filtering.html', filename=filename)
+    else:
+        flash('Allowed image types are - png, jpg, jpeg, gif')
+        return redirect(request.url)
+ 
+@app.route('/display_bilateral_filtering/<filename>')
+def display_bilateral_filtering(filename):
+    #print('display_image filename: ' + filename)
+    return redirect(url_for('static', filename='uploads/' + filename), code=301)
+
+@app.route('/display_bilateral_filtering_with_open_cv/bilateral_filtering/<filename>')
+def display_bilateral_filtering_with_open_cv(filename):
+    #print('display_with_open_cv filename: ' + filename)
+    return redirect(url_for('static', filename='saved/with_opencv/bilateral_filtering/' + filename), code=301)
+
+
+##########################################################################################
+# SHARPENING IMAGE
+#########################################################################################
+
+@app.route('/sharpening_image')
+def sharpening_image():
+    return render_template('sharpening_image.html')
+ 
+@app.route('/sharpening_image', methods=['POST'])
+def upload_image_sharpening_image():
+    if 'file' not in request.files:
+        flash('No file part')
+        return redirect(request.url)
+    file = request.files['file']
+    if file.filename == '':
+        flash('No image selected for uploading')
+        return redirect(request.url)
+    if file and allowed_file(file.filename):
+        filename = secure_filename(file.filename)
+        file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+        #print('upload_image filename: ' + filename)
+        flash('Image successfully uploaded and displayed below')
+		
+        image_path = "static/uploads/" + filename
+        original_image = cv2.imread(image_path)
+
+		# WITH OPEN CV
+        kernel = np.array([[0, -1, 0],
+                   [-1, 5, -1],
+                   [0, -1, 0]])
+
+        sharp = cv2.filter2D(src=original_image, ddepth=-1, kernel=kernel)
+
+        cv2.imwrite("static/saved/with_opencv/sharpening_image/" + filename, sharp)
+
+        return render_template('sharpening_image.html', filename=filename)
+    else:
+        flash('Allowed image types are - png, jpg, jpeg, gif')
+        return redirect(request.url)
+ 
+@app.route('/display_sharpening_image/<filename>')
+def display_sharpening_image(filename):
+    #print('display_image filename: ' + filename)
+    return redirect(url_for('static', filename='uploads/' + filename), code=301)
+
+@app.route('/display_sharpening_image_with_open_cv/sharpening_image/<filename>')
+def display_sharpening_image_with_open_cv(filename):
+    #print('display_with_open_cv filename: ' + filename)
+    return redirect(url_for('static', filename='saved/with_opencv/sharpening_image/' + filename), code=301)
+
+
 @app.route('/display_random/<filename>')
 def display_random(filename):
     #print('display_image filename: ' + filename)
